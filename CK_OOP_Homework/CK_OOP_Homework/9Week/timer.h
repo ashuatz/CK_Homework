@@ -46,6 +46,8 @@ public:
 			while (m_running)
 			{
 				auto delta = std::chrono::steady_clock::now() + std::chrono::milliseconds(m_interval);
+
+				//humm....
 				m_func();
 				std::this_thread::sleep_until(delta);
 			}

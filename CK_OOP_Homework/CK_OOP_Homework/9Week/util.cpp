@@ -1,8 +1,5 @@
+#include "pch.h"
 #include "util.h"
-#include <Windows.h>
-#include <algorithm>
-#include <vector>
-#include <iterator>
 
 static int g_nScreenIndex;
 static HANDLE g_hScreen[2];

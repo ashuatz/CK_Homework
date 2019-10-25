@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include "pch.h"
 
 #define ENTER	13
 #define LEFT    75
@@ -26,4 +26,14 @@ void AppendScreenPrint(const char *string);
 void SetColor(unsigned short color);
 
 template <typename T>
-int CustomRemove(std::vector<T> target, const T& rhs);
+int CustomRemove(std::vector<T>* target, const T& rhs)
+{
+	auto lastSize = target->size();
+	auto end = target->erase(std::remove_if(target->begin(), target->end(),
+		[=](const T& t)
+	{
+		return t == rhs;
+	}), target->end());
+
+	return lastSize - std::distance(target->begin(), end);
+}

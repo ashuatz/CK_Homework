@@ -15,27 +15,45 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="7Week\201913014_Account.cpp">
+    <ClCompile Include="9Week\game.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="7Week\201913014_AccountHandler.cpp">
+    <ClCompile Include="9Week\main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="7Week\201913014_7Week.cpp">
+    <ClCompile Include="9Week\Map.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="7Week\201913014_InputModule.cpp">
+    <ClCompile Include="9Week\source.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="9Week\timer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="9Week\util.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="7Week\201913014_Account.h">
+    <ClInclude Include="9Week\util.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="7Week\201913014_AccountHandler.h">
+    <ClInclude Include="9Week\type.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="7Week\201913014_InputModule.h">
+    <ClInclude Include="9Week\timer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="9Week\point.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="9Week\pch.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="9Week\Map.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="9Week\game.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
