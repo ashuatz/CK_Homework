@@ -57,7 +57,7 @@ class Game
 	}
 
 public:
-	Game() :mt((random_device())()), currentScore(0), mapRange(0, 9), CellSymbols{ "¡à","¢Â","¡Þ","¡ß" }
+	Game() :mt((random_device())()),ItemCount(0),EnemyCount(0), currentScore(0), mapRange(0, 9), CellSymbols{ "¡à","¢Â","¡Þ","¡ß" }
 	{
 		std::function<void(void)> SpawnEnemy = std::bind(&Game::SpawnEnemy, this);
 		std::function<void(void)> SpawnItem = std::bind(&Game::SpawnItem, this);

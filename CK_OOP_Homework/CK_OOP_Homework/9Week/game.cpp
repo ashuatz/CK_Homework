@@ -115,7 +115,7 @@ void Game::UpdateScreen() const
 	ScreenPrint(string("Enemy : ")
 		.append(GetCellSymbol(CellType::Enemy))
 		.append("   | Next Spawn : ")
-		.append(std::to_string(remainEnemySpawnTime).substr(0, 3))
+		.append(std::to_string(remainEnemySpawnTime > 0 ? remainEnemySpawnTime : 0).substr(0, 3))
 		.append("\n")
 		.c_str());
 
@@ -123,7 +123,7 @@ void Game::UpdateScreen() const
 	ScreenPrint(string("Item  : ")
 		.append(GetCellSymbol(CellType::Item))
 		.append("   | Next Spawn : ")
-		.append(std::to_string(remainItemSpawnTime).substr(0, 3))
+		.append(std::to_string(remainItemSpawnTime > 0 ? remainItemSpawnTime : 0).substr(0, 3))
 		.append("\n")
 		.c_str());
 
@@ -155,6 +155,9 @@ void Game::UpdateScreen() const
 
 void Game::SpawnEnemy()
 {
+	if (MaxEnemyCount <= EnemyCount)
+		return;
+
 	//Not Good performance.
 	//확률적 알고리즘. 초반 절반까지는 기대이상의성능을 낼 수 있지만, 절반을 넘어간다면 현저히 느려질 수 있다.
 	Point target;
@@ -167,6 +170,7 @@ void Game::SpawnEnemy()
 	}
 
 	EnemyPositions.emplace_back(target);
+	EnemyCount++;
 
 	map.SetTargetCell(target, CellType::Enemy);
 	remainEnemySpawnTime = EnemySpawnTime;
@@ -174,6 +178,9 @@ void Game::SpawnEnemy()
 
 void Game::SpawnItem()
 {
+	if (MaxItemCount <= ItemCount)
+		return;
+
 	Point target;
 	while (true)
 	{
@@ -184,6 +191,7 @@ void Game::SpawnItem()
 	}
 
 	ItemPositions.emplace_back(target);
+	ItemCount++;
 
 	map.SetTargetCell(target, CellType::Item);
 	remainItemSpawnTime = ItemSpawnTime;
