@@ -3,6 +3,7 @@
 #include <vector>
 #include <functional>
 #include <conio.h>
+#include <string>
 
 #include "util.h"
 #include "timer.h"
@@ -11,16 +12,16 @@ using namespace std;
 
 
 template <typename T>
-int CustomRemove(std::vector<T> target, const T& rhs)
+int CustomRemove(std::vector<T>* target, const T& rhs)
 {
-	auto lastSize = target.size();
-	auto end = target.erase(std::remove_if(target.begin(), target.end(),
+	auto lastSize = target->size();
+	auto end = target->erase(std::remove_if(target->begin(), target->end(),
 		[=](const T& t)
 	{
 		return t == rhs;
-	}), target.end());
+	}), target->end());
 
-	return (lastSize - std::distance(target.begin(), end)) / sizeof(T);
+	return lastSize - std::distance(target->begin(), end);
 }
 
 
@@ -140,7 +141,13 @@ class Game
 	vector<Point> ItemPositions;
 
 	Timer<void(void)> EnemySpawnTimer;
+	float remainEnemySpawnTime;
+	static constexpr float EnemySpawnTime = 10;
+
 	Timer<void(void)> ItemSpawnTimer;
+	float remainItemSpawnTime;
+	static constexpr float ItemSpawnTime = 5;
+
 	Timer<void(void)> UpdateTimer;
 
 	const string CellSymbols[4];
@@ -150,7 +157,11 @@ class Game
 	Map map;
 
 	int ItemCount;
+	static constexpr int MaxItemCount = Map::MapHeight * Map::MapWidth;
 	int EnemyCount;
+	static constexpr int MaxEnemyCount = 10;
+
+	int currentScore;
 
 	bool Enabled = false;
 
@@ -171,14 +182,14 @@ class Game
 	}
 
 public:
-	Game() :mt((random_device())()), mapRange(0, 9), CellSymbols{ "□","◈","◇","◆" }
+	Game() :mt((random_device())()), currentScore(0), mapRange(0, 9), CellSymbols{ "□","◈","◇","◆" }
 	{
 		std::function<void(void)> SpawnEnemy = std::bind(&Game::SpawnEnemy,this);
 		std::function<void(void)> SpawnItem = std::bind(&Game::SpawnItem,this);
 		std::function<void(void)> Update = std::bind(&Game::Update,this);
 
-		EnemySpawnTimer.Initialize(SpawnEnemy, 10 * 1000);
-		ItemSpawnTimer.Initialize(SpawnItem, 5 * 1000);
+		EnemySpawnTimer.Initialize(SpawnEnemy, EnemySpawnTime * 1000);
+		ItemSpawnTimer.Initialize(SpawnItem, ItemSpawnTime * 1000);
 		UpdateTimer.Initialize(Update, 16);
 	}
 
@@ -193,10 +204,29 @@ public:
 		UpdateTimer.start();
 
 		PlayerPosition = Point(0, 0);
+		map.SetTargetCell(PlayerPosition, CellType::Player);
 
 		Input();
 	}
 
+	void Destroy()
+	{
+		UpdateTimer.stop();
+		ItemSpawnTimer.stop();
+		EnemySpawnTimer.stop();
+
+		Enabled = false;
+	}
+
+	~Game()
+	{
+		if (Enabled)
+			Destroy();
+
+		ScreenRelease();
+	}
+
+private:
 	void Input()
 	{
 		while (Enabled)
@@ -233,22 +263,29 @@ public:
 
 	void Update()
 	{
+		//Time
+		remainEnemySpawnTime -= 16 * 0.001f;
+		remainItemSpawnTime -= 16 * 0.001f;
+
 		//Collision
-		int enemyRemoveCount = CustomRemove(EnemyPositions, PlayerPosition);
+		int enemyRemoveCount = CustomRemove(&EnemyPositions, PlayerPosition);
 		if (enemyRemoveCount > 0)
 		{
 			//Player and Enemy Contact
+			enemyRemoveCount = 0;
+			Destroy();
 
-				//enable = false
-				//terminate game
+			//enable = false
+			//terminate game
 		}
 
-		int itemRemoveCount = CustomRemove(ItemPositions, PlayerPosition);
+		int itemRemoveCount = CustomRemove(&ItemPositions, PlayerPosition);
 		if (itemRemoveCount > 0)
 		{
 			//Player and player Contanct
-
-				//add Score
+			itemRemoveCount = 0;
+			currentScore += 1;
+			//add Score
 		}
 
 		//Movement
@@ -267,6 +304,30 @@ public:
 		SetCursorReset();
 		//rendering UI
 
+		//나올 정보 : 몬스터 모양, 몬스터 스폰까지 남은 시간
+		ScreenPrint(string("Enemy : ")
+			.append(GetCellSymbol(CellType::Enemy))
+			.append("   | Next Spawn : ")
+			.append(std::to_string(remainEnemySpawnTime).substr(0,3))
+			.append("\n")
+			.c_str());
+
+		//나올 정보 : 아이템 모양, 아이템 스폰까지 남은 시간
+		ScreenPrint(string("Item  : ")
+			.append(GetCellSymbol(CellType::Item))
+			.append("   | Next Spawn : ")
+			.append(std::to_string(remainItemSpawnTime).substr(0, 3))
+			.append("\n")
+			.c_str());
+
+		//나올 정보 : 현재 스코어
+		ScreenPrint(string("Score : ")
+			.append(std::to_string(currentScore))
+			.append("\n")
+			.c_str());
+
+		ScreenPrint("\n");
+
 		//rendering map
 		for (int y = 0; y < map.MapHeight; ++y)
 		{
@@ -277,28 +338,49 @@ public:
 			ScreenPrint("\n");
 		}
 
+		if (!Enabled)
+		{
+			ScreenPrint("종료되었습니다 \n");
+		}
+
 		ScreenFlipping();
 	}
 
 	void SpawnEnemy()
 	{
+		//Not Good performance.
+		//확률적 알고리즘. 초반 절반까지는 기대이상의성능을 낼 수 있지만, 절반을 넘어간다면 현저히 느려질 수 있다.
+		Point target;
+		while(true)
+		{
+			target = Point(GetRandom(), GetRandom());
 
+			if (map.GetTargetCell(target) == CellType::None)
+				break;
+		}
 
-		//UpdateScreen();
+		EnemyPositions.emplace_back(target);
+
+		map.SetTargetCell(target, CellType::Enemy);
+		remainEnemySpawnTime = EnemySpawnTime;
 	}
 
 	void SpawnItem()
 	{
+		Point target;
+		while (true)
+		{
+			target = Point(GetRandom(), GetRandom());
 
-		//UpdateScreen();
+			if (map.GetTargetCell(target) == CellType::None)
+				break;
+		}
+
+		ItemPositions.emplace_back(target);
+
+		map.SetTargetCell(target, CellType::Item);
+		remainItemSpawnTime = ItemSpawnTime;
 	}
-
-
-	~Game() 
-	{
-		ScreenRelease();
-	}
-
 };
 
 
