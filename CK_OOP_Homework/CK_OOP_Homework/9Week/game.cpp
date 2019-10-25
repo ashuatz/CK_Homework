@@ -112,18 +112,20 @@ void Game::UpdateScreen() const
 	//rendering UI
 
 	//나올 정보 : 몬스터 모양, 몬스터 스폰까지 남은 시간
+	string leftEnemyTime = remainEnemySpawnTime > 0 ? std::to_string(remainEnemySpawnTime).substr(0, 3) : "----";
 	ScreenPrint(string("Enemy : ")
 		.append(GetCellSymbol(CellType::Enemy))
 		.append("   | Next Spawn : ")
-		.append(std::to_string(remainEnemySpawnTime > 0 ? remainEnemySpawnTime : 0).substr(0, 3))
+		.append(leftEnemyTime)
 		.append("\n")
 		.c_str());
 
 	//나올 정보 : 아이템 모양, 아이템 스폰까지 남은 시간
+	string leftItemTime = remainItemSpawnTime > 0 ? std::to_string(remainItemSpawnTime).substr(0, 3) : "----";
 	ScreenPrint(string("Item  : ")
 		.append(GetCellSymbol(CellType::Item))
 		.append("   | Next Spawn : ")
-		.append(std::to_string(remainItemSpawnTime > 0 ? remainItemSpawnTime : 0).substr(0, 3))
+		.append(leftItemTime)
 		.append("\n")
 		.c_str());
 
