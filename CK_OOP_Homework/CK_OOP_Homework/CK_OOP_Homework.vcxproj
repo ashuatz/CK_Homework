@@ -19,21 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="9Week\game.cpp" />
-    <ClCompile Include="9Week\main.cpp" />
-    <ClCompile Include="9Week\Map.cpp" />
-    <ClCompile Include="9Week\source.cpp" />
-    <ClCompile Include="9Week\timer.cpp" />
-    <ClCompile Include="9Week\util.cpp" />
+    <ClCompile Include="10Week\201913014_Account.cpp" />
+    <ClCompile Include="10Week\201913014_Bank.cpp" />
+    <ClCompile Include="10Week\source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="9Week\game.h" />
-    <ClInclude Include="9Week\Map.h" />
-    <ClInclude Include="9Week\pch.h" />
-    <ClInclude Include="9Week\point.h" />
-    <ClInclude Include="9Week\timer.h" />
-    <ClInclude Include="9Week\type.h" />
-    <ClInclude Include="9Week\util.h" />
+    <ClInclude Include="10Week\201913014_Account.h" />
+    <ClInclude Include="10Week\201913014_Bank.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
