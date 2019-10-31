@@ -1,19 +1,18 @@
 #include "Map.h"
 
-void Map::ContactTargetCell(const Point& pos, Object* accessor)
+void Map::SetTargetCell(const Point & pos, const ObjectType & target)
 {
 	if (!CheckAccess(pos))
 		return;
-
-	m[pos.y][pos.x].SetLocatedObject(accessor);
+	m[pos.y][pos.x] = target;
 }
 
-const ObjectType Map::GetAttachedObjectType(const Point & pos) const
+const ObjectType Map::GetTargetCell(const Point & pos) const
 {
 	if (!CheckAccess(pos))
 		return ObjectType::Error;
 
-	return m[pos.y][pos.x].GetLocatedObjectType();
+	return m[pos.y][pos.x];
 }
 
 const bool Map::CheckAccess(const Point & value) const

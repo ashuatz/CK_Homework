@@ -10,9 +10,6 @@ void Game::Start()
 	ItemSpawnTimer.start();
 	UpdateTimer.start();
 
-	PlayerPosition = Point(0, 0);
-	map.SetTargetCell(PlayerPosition, CellType::Player);
-
 	Input();
 }
 
@@ -55,36 +52,63 @@ void Game::Input()
 	}
 }
 
-void Game::OnPlayerInput(const Point & delta)
-{
-	if (!map.CheckAccess(PlayerPosition + delta))
-		return;
-
-	map.SetTargetCell(PlayerPosition, CellType::None);
-	PlayerPosition += delta;
-	map.SetTargetCell(PlayerPosition, CellType::Player);
-}
-
 void Game::Update()
 {
 	//Time
-	remainItemSpawnTime -= 16 * 0.001f;
+	remainItemSpawnTime -= UpdateTick * 0.001f;
 
-	//Collision
-	int itemRemoveCount = CustomRemove(&ItemPositions, PlayerPosition);
-	if (itemRemoveCount > 0)
+	bool isAdded = false;
+
+	//Collision with Item
+	int targetIndex = ItemPositions.IndexOf(Player[0]->GetPosition());
+	if (targetIndex != -1)
 	{
-		//Player and player Contanct
-		itemRemoveCount = 0;
-		currentScore += 1;
-		//add Score
+		ItemPositions.Remove(targetIndex);
+
+		Player.CreateBodyToFirst(Player[0]->GetPosition());
 	}
 
+
 	//Movement
-	if (LastInput != Point(0, 0))
+	int count = Player.GetLength();
+	for (int i = 0; i < count; ++i)
 	{
-		OnPlayerInput(LastInput);
-		LastInput = Point(0, 0);
+		map.SetTargetCell(Player[i]->GetPosition(), ObjectType::None);
+	}
+
+	Player[0]->SetDir(LastInput);
+
+	if (isAdded)
+	{
+		Player[0]->SetPosition(Player[0]->GetPosition() + Player[0]->GetDirection());
+		Player[1]->SetDir(LastInput);
+	}
+	else
+	{
+		Player.Update();
+	}
+	
+	for (int i = 0; i < count; ++i)
+	{
+		map.SetTargetCell(Player[i]->GetPosition(), Player[i]->GetType());
+	}
+
+
+	//Check Game End
+	//Head Contact Body
+	if (map.GetTargetCell(Player[0]->GetPosition()) == ObjectType::PlayerBody)
+	{
+		Destroy();
+	}
+
+	//Out of Map
+	for (int i = 0; i < count; ++i)
+	{
+		if (!map.CheckAccess(Player[i]->GetPosition()))
+		{
+			this->Enabled = false;
+			break;
+		}
 	}
 
 	//Render
@@ -99,15 +123,9 @@ void Game::UpdateScreen() const
 	//나올 정보 : 아이템 모양, 아이템 스폰까지 남은 시간
 	string leftItemTime = remainItemSpawnTime > 0 ? std::to_string(remainItemSpawnTime).substr(0, 3) : "----";
 	ScreenPrint(string("Item  : ")
-		.append(GetCellSymbol(CellType::Item))
+		.append(GetCellSymbol(ObjectType::Item))
 		.append("   | Next Spawn : ")
 		.append(leftItemTime)
-		.append("\n")
-		.c_str());
-
-	//나올 정보 : 현재 스코어
-	ScreenPrint(string("Score : ")
-		.append(std::to_string(currentScore))
 		.append("\n")
 		.c_str());
 
@@ -142,13 +160,13 @@ void Game::SpawnItem()
 	{
 		target = Point(GetRandom(), GetRandom());
 
-		if (map.GetTargetCell(target) == CellType::None)
+		if (map.GetTargetCell(target) == ObjectType::None)
 			break;
 	}
 
-	ItemPositions.emplace_back(target);
+	ItemPositions.Add(target);
 	ItemCount++;
 
-	map.SetTargetCell(target, CellType::Item);
+	map.SetTargetCell(target, ObjectType::Item);
 	remainItemSpawnTime = ItemSpawnTime;
 }

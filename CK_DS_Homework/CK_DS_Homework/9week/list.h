@@ -1,6 +1,50 @@
 ﻿#pragma once
 #include "pch.h"
 #include "object.h"
+#include "point.h"
+
+class PositionList
+{
+private:
+	int capacity;
+	int count;
+	Point** points;
+	
+	void Resize()
+	{
+		capacity *= 2;
+
+		auto temp = points;
+		points = new Point*[capacity];
+		for (int i = 0; i < count; ++i)
+		{
+			points[i] = temp[i];
+		}
+
+		delete[] temp;
+	}
+
+public:
+	PositionList() : count(0), capacity(2)
+	{
+		points = new Point*[capacity];
+	}
+
+	void Add(const Point& target);
+
+	const int IndexOf(const Point& target) const;
+
+	void Remove(const Point& target);
+
+	void Remove(const int& idx);
+
+	Point* Retrieve(const int& index) const;
+
+	Point* Find(const Point& pred) const;
+
+	const bool Contains(const Point& target) const;
+};
+
 
 class SnakeList
 {
@@ -39,35 +83,14 @@ private:
 
 		bodys[0] = nullptr;
 	}
-
-	//direction only
-	void Move()
-	{
-		if (isEmpty())
-			return;
-
-		if (isFull())
-			Resize();
-
-		for (int i = count - 1; i >= 0; --i)
-		{
-			//move
-			
-			bodys[i]->SetPosition(bodys[i]->GetPosition() + bodys[i]->GetDirection());
-			//pass
-			bodys[i + 1]->SetDir(bodys[i]->GetDirection());
-		}
-
-		bodys[0] = nullptr;
-	}
-
+	
 public:
 	SnakeList() : count(0), capacity(2) 
 	{
 		bodys = new SnakeBody*[capacity];
 		for (int i = 0; i < count; ++i)
 		{
-			bodys[i] = new SnakeBody(i, "◈", Point(0, 0));
+			bodys[i] = new SnakeBody(i,  Point(0, 0));
 			bodys[i]->SetDir(Point(1, 0));
 		}
 	}
@@ -77,43 +100,27 @@ public:
 		bodys = new SnakeBody*[capacity];
 		for (int i = 0; i < count; ++i)
 		{
-			bodys[i] = new SnakeBody(i, "◈", Point(0, 0));
+			bodys[i] = new SnakeBody(i, Point(0, 0), i == 0 ? ObjectType::PlayerHead : ObjectType::PlayerBody);
 			bodys[i]->SetDir(Point(1, 0));
 		}
 	}
 
-	void CreateBodyToFirst(const Point& pos)
-	{
-		Shift();
+	void CreateBodyToFirst(const Point& pos);
 
-		bodys[0] = new SnakeBody(0, "◈", pos);
+	void SetHeadDirection(const Point& dir) const;
 
-		count++;
+	SnakeBody* GetBody(const int& index) const;
 
-		if (count > 1)
-		{
-			bodys[1]->SetSymbol("◇");
-		}
-	}
-
-	void SetHeadDirection(const Point& dir)
-	{
-		if (isEmpty())
-			return;
-
-		bodys[0]->SetDir(dir);
-	}
-
-	void Update()
-	{
-		for (int i = 0; i < count; ++i)
-		{
-
-		}
-	}
+	void Update();
 
 	const bool isEmpty() const { return count <= 0; }
 	const bool isFull() const { return capacity == count; }
+	const int GetLength() const { return count; }
+
+	SnakeBody* operator[](const int& index)
+	{
+		return GetBody(index);
+	}
 
 	~SnakeList() {}
 };

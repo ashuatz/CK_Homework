@@ -14,23 +14,23 @@ public:
 	static constexpr int MapWidth = 10;
 	static constexpr int MapHeight = 10;
 
-	Cell** m;
+	ObjectType** m;
 	Map() : MapMin(Point(0, 0)), MapMax(Point(MapWidth, MapHeight))
 	{
-		m = new Cell*[10];
+		m = new ObjectType*[10];
 		for (int i = 0; i < 10; ++i)
 		{
-			m[i] = new Cell[10];
+			m[i] = new ObjectType[10];
 			for (int j = 0; j < 10; ++j)
 			{
-				m[i][j].SetPosition(Point(j, i));
+				m[i][j] = ObjectType::None;
 			}
 		}
 	}
 
-	void ContactTargetCell(const Point& pos, Object* accessor);
+	void SetTargetCell(const Point& pos, const ObjectType& target);
 
-	const ObjectType GetAttachedObjectType(const Point& pos) const;
+	const ObjectType GetTargetCell(const Point& pos) const;
 
 	const bool CheckAccess(const Point& value) const;
 

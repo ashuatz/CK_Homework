@@ -10,8 +10,6 @@ void gotoxy(const int& x, const int& y)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), CursorPosition);
 }
 
-
- 
 void ScreenInit()
 {
      CONSOLE_CURSOR_INFO cci;
@@ -80,15 +78,17 @@ void SetColor( unsigned short color )
      SetConsoleTextAttribute( g_hScreen[g_nScreenIndex], color );
 }
 
-template <typename T>
-int CustomRemove(std::vector<T> target, const T& rhs)
-{
-	auto lastSize = target.size();
-	auto end = target.erase(std::remove_if(target.begin(), target.end(),
-		[=](const T& t)
-	{
-		return t == rhs;
-	}), target.end());
+//DO NOT use in List-Homework
 
-	return (lastSize - std::distance(target.begin(), end)) / sizeof(T);
-}
+//template <typename T>
+//int CustomRemove(std::vector<T> target, const T& rhs)
+//{
+//	auto lastSize = target.size();
+//	auto end = target.erase(std::remove_if(target.begin(), target.end(),
+//		[=](const T& t)
+//	{
+//		return t == rhs;
+//	}), target.end());
+//
+//	return (lastSize - std::distance(target.begin(), end)) / sizeof(T);
+//}

@@ -25,15 +25,17 @@ void ScreenPrint(const int& x, const int& y, const char* string);
 void AppendScreenPrint(const char *string);
 void SetColor(unsigned short color);
 
-template <typename T>
-int CustomRemove(std::vector<T>* target, const T& rhs)
-{
-	auto lastSize = target->size();
-	auto end = target->erase(std::remove_if(target->begin(), target->end(),
-		[=](const T& t)
-	{
-		return t == rhs;
-	}), target->end());
+//DO NOT use in List-Homework
 
-	return lastSize - std::distance(target->begin(), end);
-}
+//template <typename T>
+//int CustomRemove(std::vector<T> target, const T& rhs)
+//{
+//	auto lastSize = target.size();
+//	auto end = target.erase(std::remove_if(target.begin(), target.end(),
+//		[=](const T& t)
+//	{
+//		return t == rhs;
+//	}), target.end());
+//
+//	return (lastSize - std::distance(target.begin(), end)) / sizeof(T);
+//}
