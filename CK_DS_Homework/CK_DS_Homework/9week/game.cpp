@@ -66,6 +66,7 @@ void Game::Update()
 		ItemPositions.Remove(targetIndex);
 
 		Player.CreateBodyToFirst(Player[0]->GetPosition());
+		isAdded = true;
 	}
 
 

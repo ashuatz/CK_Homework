@@ -23,9 +23,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="9week\game.cpp" />
+    <ClCompile Include="9week\list.cpp" />
     <ClCompile Include="9week\Map.cpp" />
     <ClCompile Include="9week\source.cpp" />
-    <ClCompile Include="9week\timer.cpp" />
     <ClCompile Include="9week\util.cpp" />
   </ItemGroup>
   <ItemGroup>
