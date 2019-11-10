@@ -18,48 +18,63 @@
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="9week\game.cpp">
+    <ClCompile Include="11week\list.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="9week\Map.cpp">
+    <ClCompile Include="11week\game.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="9week\source.cpp">
+    <ClCompile Include="11week\Map.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="9week\util.cpp">
+    <ClCompile Include="11week\pch.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="9week\list.cpp">
+    <ClCompile Include="11week\source.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="11week\timer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="11week\util.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="11week\object.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="9week\Map.h">
+    <ClInclude Include="11week\game.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="9week\pch.h">
+    <ClInclude Include="11week\list.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="9week\point.h">
+    <ClInclude Include="11week\Map.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="9week\game.h">
+    <ClInclude Include="11week\object.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="9week\type.h">
+    <ClInclude Include="11week\pch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="9week\timer.h">
+    <ClInclude Include="11week\point.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="9week\util.h">
+    <ClInclude Include="11week\timer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="9week\list.h">
+    <ClInclude Include="11week\type.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="9week\object.h">
+    <ClInclude Include="11week\util.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="11week\singleton.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="11week\gameSystem.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
