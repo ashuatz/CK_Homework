@@ -18,6 +18,12 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="13Week\list.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="13Week\source.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{7D0832E3-CADA-41A8-8727-15FEC9EE9029}</ProjectGuid>
