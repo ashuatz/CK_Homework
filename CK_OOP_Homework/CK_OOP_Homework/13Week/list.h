@@ -172,7 +172,7 @@ public:
 
 
 	template <class _Predicate>
-	const int indexOf(_Predicate pred)
+	const int indexOf(_Predicate pred) const
 	{
 		if (head == nullptr)
 			return -1;
@@ -192,7 +192,7 @@ public:
 	}
 
 	template <>
-	const int indexOf(T* target)
+	const int indexOf(T* target) const
 	{
 		if (head == nullptr)
 			return -1;
@@ -243,7 +243,7 @@ public:
 			if (head == nullptr)
 				break;
 
-			it = head->next;
+			it = head;
 			idx++;
 		}
 
@@ -254,7 +254,24 @@ public:
 		return arr;
 	}
 
-	const int Count() { return m_count; }
+	~LinkedList()
+	{
+		if (m_count == 0)
+			return;
+
+		int size = m_count;
+		auto data = removeAll(size);
+
+		for (int i = 0; i < size; ++i)
+		{
+			delete data[i];
+		}
+
+		delete[] data;
+	}
+
+
+	const int Count() const { return m_count; }
 
 	friend std::ostream& operator<<(std::ostream& os, const LinkedList<T>& list)
 	{
